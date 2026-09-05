@@ -947,8 +947,20 @@ int print_engine_reset_paper(PrintEngine* engine, int paper_size) {
         return -5;
     }
 
-    pe_log_devmode("PAPER_RESET_DEVMODE_BEFORE", (DEVMODEA*)dm, IDOK);
-    
+	pe_log_devmode("PAPER_RESET_DEVMODE_BEFORE", (DEVMODEA*)dm, IDOK);
+
+  // ResetDC 使用的是打印机默认 DEVMODE，默认方向可能恢复成纵向。
+  // 根据当前打印 DC 的可打印区域保留现有打印方向。
+  int current_printable_w = GetDeviceCaps(engine->hPrinterDC, HORZRES);
+  int current_printable_h = GetDeviceCaps(engine->hPrinterDC, VERTRES);
+
+  if (current_printable_w > 0 && current_printable_h > 0) {
+      dm->dmFields |= DM_ORIENTATION;
+      dm->dmOrientation =
+          (current_printable_w > current_printable_h)
+          ? DMORIENT_LANDSCAPE
+          : DMORIENT_PORTRAIT;
+  }
     // 设置纸张大小
     dm->dmFields |= DM_PAPERSIZE;
     switch (paper_size) {
@@ -1052,8 +1064,12 @@ int print_engine_reset_paper(PrintEngine* engine, int paper_size) {
         PE_LOG_EVENT("ERROR", "PAPER_RESET_END", "status=FAIL | engine=%p | requested_id=%d | requested=%s | ret=-6 | gle=%lu", (void*)engine, paper_size, pe_paper_name(paper_size), le);
         return -6;
     }
+	// ResetDC 可能返回更新后的 HDC，后续打印必须使用它。
+	engine->hPrinterDC = newDC;
 
     pe_log_dc_caps(newDC, "PAPER_RESET_DC_CAPS");
+	
+	
     PE_LOG_EVENT("INFO", "PAPER_RESET_END", "status=OK | engine=%p | requested_id=%d | requested=%s | ret=0", (void*)engine, paper_size, pe_paper_name(paper_size));
     
     return 0;
