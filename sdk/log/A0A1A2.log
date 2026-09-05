@@ -1,0 +1,211 @@
+
+========== Session: 2026-07-25 11:14:51 ==========
+[MuPDF] mupdf_batch_add_image: auto-set image_width=180.0, image_height=35.0
+[calc_pos] page=0 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im110805232
+[calc_pos] page=1 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im110806216
+[calc_pos] page=2 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im7097792
+[calc_pos] page=3 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im7098680
+[MuPDF] mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067700-user1-����-����1, total_pages=4
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067700-user1-公开-部门1, total_pages=4
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067700-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067700-user1-公开-部门1-1/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=0 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067700-user1-公开-部门1-1/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067700-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067700-user1-公开-部门1-2/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=1 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067700-user1-公开-部门1-2/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067700-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067700-user1-公开-部门1-3/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=2 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067700-user1-公开-部门1-3/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067700-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067700-user1-公开-部门1-4/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=3 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067700-user1-公开-部门1-4/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] mupdf_batch_add_text 完成: 共添加 4 页
+[mupdf_print_pages] ENTER: total_pages=4, printer=(null), page_nums=00000000, page_count=-1
+[mupdf_print] Auto-detected portrait pages, setting orientation to 1 (portrait)
+[mupdf_print] ★★★ START PAGE SIZE DETECTION ★★★[mupdf_print] options=081DBEB0, options->paper_size=0[mupdf_print] Calling mupdf_get_page_size...[mupdf_print] Page 0 raw size: pw=595.0, ph=841.0 pt[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] ★★★ DETECTED paper=1 (A4) ★★★[mupdf_print] SET print_opts->paper_size=1 (A4), page0=595.0x841.0 pt[mupdf_print] ★★★ FINAL print_opts->paper_size=1 ★★★[mupdf_print] Calling print_engine_create...
+========== PE Session: 2026-07-25 11:14:51 ==========
+[PrintEngine] Checking paper_size...[PrintEngine] Incoming paper_size=1 (A4)[PrintEngine] ★★★ Set dmPaperSize=9 (paper_size option=1) ★★★[mupdf_print] Starting print job: printer=(default), job_name=HDPrintConsole-1#Document-0136D2026000000000067700$.pdf, total_pages=4, from=0, to=3
+[mupdf_print] === PRINT LOOP START: from=0, to=3, total_pages=4, dpi=300, paper_size=1 ===
+[mupdf_print] --- Page 1/4 (doc_idx=0) ---
+[mupdf_print] Rendering page 0 at 300 DPI...
+[MuPDF] page 0: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 0, 2480x3505 px (24.9MB), page=0x0pt, dpi=300
+[PRINT] page 0: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 0 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #1: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 1 printed OK[mupdf_print] Page 0 printed OK (printed=1, failed=0, skipped=0)
+[mupdf_print] --- Page 2/4 (doc_idx=1) ---
+[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] Rendering page 1 at 300 DPI...
+[MuPDF] page 1: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 1, 2480x3505 px (24.9MB), page=595x841pt, dpi=300
+[PRINT] page 1: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 1 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #2: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 2 printed OK[mupdf_print] Page 1 printed OK (printed=2, failed=0, skipped=0)
+[mupdf_print] --- Page 3/4 (doc_idx=2) ---
+[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] Rendering page 2 at 300 DPI...
+[MuPDF] page 2: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 2, 2480x3505 px (24.9MB), page=595x841pt, dpi=300
+[PRINT] page 2: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 2 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #3: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 3 printed OK[mupdf_print] Page 2 printed OK (printed=3, failed=0, skipped=0)
+[mupdf_print] --- Page 4/4 (doc_idx=3) ---
+[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] Rendering page 3 at 300 DPI...
+[MuPDF] page 3: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 3, 2480x3505 px (24.9MB), page=595x841pt, dpi=300
+[PRINT] page 3: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 3 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #4: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 4 printed OK[mupdf_print] Page 3 printed OK (printed=4, failed=0, skipped=0)
+[mupdf_print] === PRINT LOOP END: printed=4, failed=0, skipped=0 ===
+[MuPDF] mupdf_batch_add_image: auto-set image_width=180.0, image_height=35.0
+[calc_pos] page=0 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im110828336
+[calc_pos] page=1 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im110829320
+[calc_pos] page=2 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im7205656
+[calc_pos] page=3 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im7204240
+[MuPDF] mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067800-user1-����-����1, total_pages=4
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067800-user1-公开-部门1, total_pages=4
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067800-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067800-user1-公开-部门1-1/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=0 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067800-user1-公开-部门1-1/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067800-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067800-user1-公开-部门1-2/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=1 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067800-user1-公开-部门1-2/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067800-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067800-user1-公开-部门1-3/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=2 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067800-user1-公开-部门1-3/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067800-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067800-user1-公开-部门1-4/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=3 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067800-user1-公开-部门1-4/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] mupdf_batch_add_text 完成: 共添加 4 页
+[mupdf_print_pages] ENTER: total_pages=4, printer=(null), page_nums=00000000, page_count=-1
+[mupdf_print] Auto-detected portrait pages, setting orientation to 1 (portrait)
+[mupdf_print] ★★★ START PAGE SIZE DETECTION ★★★[mupdf_print] options=081DBEB0, options->paper_size=0[mupdf_print] Calling mupdf_get_page_size...[mupdf_print] Page 0 raw size: pw=595.0, ph=841.0 pt[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] ★★★ DETECTED paper=1 (A4) ★★★[mupdf_print] SET print_opts->paper_size=1 (A4), page0=595.0x841.0 pt[mupdf_print] ★★★ FINAL print_opts->paper_size=1 ★★★[mupdf_print] Calling print_engine_create...[PrintEngine] Checking paper_size...[PrintEngine] Incoming paper_size=1 (A4)[PrintEngine] ★★★ Set dmPaperSize=9 (paper_size option=1) ★★★[mupdf_print] Starting print job: printer=(default), job_name=HDPrintConsole-1#Document-0136D2026000000000067800$.pdf, total_pages=4, from=0, to=3
+[mupdf_print] === PRINT LOOP START: from=0, to=3, total_pages=4, dpi=300, paper_size=1 ===
+[mupdf_print] --- Page 1/4 (doc_idx=0) ---
+[mupdf_print] Rendering page 0 at 300 DPI...
+[MuPDF] page 0: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 0, 2480x3505 px (24.9MB), page=0x0pt, dpi=300
+[PRINT] page 0: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 0 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #1: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 1 printed OK[mupdf_print] Page 0 printed OK (printed=1, failed=0, skipped=0)
+[mupdf_print] --- Page 2/4 (doc_idx=1) ---
+[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] Rendering page 1 at 300 DPI...
+[MuPDF] page 1: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 1, 2480x3505 px (24.9MB), page=595x841pt, dpi=300
+[PRINT] page 1: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 1 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #2: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 2 printed OK[mupdf_print] Page 1 printed OK (printed=2, failed=0, skipped=0)
+[mupdf_print] --- Page 3/4 (doc_idx=2) ---
+[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] Rendering page 2 at 300 DPI...
+[MuPDF] page 2: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 2, 2480x3505 px (24.9MB), page=595x841pt, dpi=300
+[PRINT] page 2: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 2 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #3: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 3 printed OK[mupdf_print] Page 2 printed OK (printed=3, failed=0, skipped=0)
+[mupdf_print] --- Page 4/4 (doc_idx=3) ---
+[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] Rendering page 3 at 300 DPI...
+[MuPDF] page 3: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 3, 2480x3505 px (24.9MB), page=595x841pt, dpi=300
+[PRINT] page 3: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 3 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #4: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 4 printed OK[mupdf_print] Page 3 printed OK (printed=4, failed=0, skipped=0)
+[mupdf_print] === PRINT LOOP END: printed=4, failed=0, skipped=0 ===
+[MuPDF] mupdf_batch_add_image: auto-set image_width=180.0, image_height=35.0
+[calc_pos] page=0 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im110828312
+[calc_pos] page=1 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im110828624
+[calc_pos] page=2 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im7092152
+[calc_pos] page=3 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[add_img] visual_xywh=10,30,180,35 res=Im7092872
+[MuPDF] mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067900-user1-����-����1, total_pages=4
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067900-user1-公开-部门1, total_pages=4
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067900-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067900-user1-公开-部门1-1/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=0 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067900-user1-公开-部门1-1/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067900-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067900-user1-公开-部门1-2/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=1 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067900-user1-公开-部门1-2/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067900-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067900-user1-公开-部门1-3/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=2 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067900-user1-公开-部门1-3/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] 111111111111111111111mupdf_batch_add_text: add_page_number=1, text=0136D2026000000000067900-user1-公开-部门1, total_pages=4
+[MuPDF] 222222222222222mupdf_batch_add_text: full_text=0136D2026000000000067900-user1-公开-部门1-4/4
+[MuPDF] mupdf_batch_add_text(all): image_width=180.0, image_height=35.0, text_gap=15.0
+[calc_pos] page=3 type=1 page_wh=595x841 content_wh=180x35 margin_xy=10x30 => xy=10.0,30.0
+[MuPDF] mupdf_batch_add_text(all): img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] mupdf_batch_add_text(all): txt_w=291.6 img_pos=(10.0,30.0), text_pos=(10.0,80.0)
+[MuPDF] 添加文字(全部页): 0136D2026000000000067900-user1-公开-部门1-4/4
+[MuPDF] A4 FreeText fallback(all): page_wh=595x841
+[MuPDF] mupdf_batch_add_text 完成: 共添加 4 页
+[mupdf_print_pages] ENTER: total_pages=4, printer=(null), page_nums=00000000, page_count=-1
+[mupdf_print] Auto-detected portrait pages, setting orientation to 1 (portrait)
+[mupdf_print] ★★★ START PAGE SIZE DETECTION ★★★[mupdf_print] options=081DBEB0, options->paper_size=0[mupdf_print] Calling mupdf_get_page_size...[mupdf_print] Page 0 raw size: pw=595.0, ph=841.0 pt[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] ★★★ DETECTED paper=1 (A4) ★★★[mupdf_print] SET print_opts->paper_size=1 (A4), page0=595.0x841.0 pt[mupdf_print] ★★★ FINAL print_opts->paper_size=1 ★★★[mupdf_print] Calling print_engine_create...[PrintEngine] Checking paper_size...[PrintEngine] Incoming paper_size=1 (A4)[PrintEngine] ★★★ Set dmPaperSize=9 (paper_size option=1) ★★★[mupdf_print] Starting print job: printer=(default), job_name=HDPrintConsole-1#Document-0136D2026000000000067900$.pdf, total_pages=4, from=0, to=3
+[mupdf_print] === PRINT LOOP START: from=0, to=3, total_pages=4, dpi=300, paper_size=1 ===
+[mupdf_print] --- Page 1/4 (doc_idx=0) ---
+[mupdf_print] Rendering page 0 at 300 DPI...
+[MuPDF] page 0: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 0, 2480x3505 px (24.9MB), page=0x0pt, dpi=300
+[PRINT] page 0: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 0 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #1: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 1 printed OK[mupdf_print] Page 0 printed OK (printed=1, failed=0, skipped=0)
+[mupdf_print] --- Page 2/4 (doc_idx=1) ---
+[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] Rendering page 1 at 300 DPI...
+[MuPDF] page 1: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 1, 2480x3505 px (24.9MB), page=595x841pt, dpi=300
+[PRINT] page 1: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 1 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #2: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 2 printed OK[mupdf_print] Page 1 printed OK (printed=2, failed=0, skipped=0)
+[mupdf_print] --- Page 3/4 (doc_idx=2) ---
+[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] Rendering page 2 at 300 DPI...
+[MuPDF] page 2: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 2, 2480x3505 px (24.9MB), page=595x841pt, dpi=300
+[PRINT] page 2: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 2 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #3: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 3 printed OK[mupdf_print] Page 2 printed OK (printed=3, failed=0, skipped=0)
+[mupdf_print] --- Page 4/4 (doc_idx=3) ---
+[detect_paper] pw=595.0, ph=841.0, long_side=841.0, short_side=595.0[detect_paper] ===> RETURN A4 (1)[mupdf_print] Rendering page 3 at 300 DPI...
+[MuPDF] page 3: 2480x3505, n=3, stride=7440, expected=7440[MuPDF] first pixel: [255,255,255], stride/n=2480, step=3[mupdf_print] Render OK: page 3, 2480x3505 px (24.9MB), page=595x841pt, dpi=300
+[PRINT] page 3: w=2480, h=3505, sz=26077200, paper=1, first_pixel=BGR(255,255,255)[mupdf_print] Sending page 3 to print engine (2480x3505, 26077200 bytes)...
+[PrintEngine] === print_page #4: 2480x3505 bpp=24 datasize=26077200 ===[PrintEngine] page: 2480x3505 bpp=24 datasize=24.9MB | printer_dpi=600x600 printable=4961x7016 | target=4961x7011 center=(0,2) | first_pixel=BGR(255,255,255)[PrintEngine] Page 4 printed OK[mupdf_print] Page 3 printed OK (printed=4, failed=0, skipped=0)
+[mupdf_print] === PRINT LOOP END: printed=4, failed=0, skipped=0 ===

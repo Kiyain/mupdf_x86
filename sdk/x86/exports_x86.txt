@@ -1,0 +1,53 @@
+
+Dump of file F:\projects\mupdf-wrapper\sdk\x86\mupdf_wrapper.dll
+
+File Type: DLL
+
+  Section contains the following exports for mupdf_wrapper.dll
+
+    00000000 characteristics
+    FFFFFFFF time date stamp
+        0.00 version
+           1 ordinal base
+          30 number of functions
+          30 number of names
+
+    ordinal hint RVA      name
+
+          1    0 001BBF50 mupdf_add_image
+          2    1 001BBFA0 mupdf_add_image_from_mem
+          3    2 001BD300 mupdf_add_text
+          4    3 001C0A40 mupdf_add_text_direct
+          5    4 001BD360 mupdf_add_text_with_style
+          6    5 001BF040 mupdf_batch_add_barcode_label
+          7    6 001BC8B0 mupdf_batch_add_image
+          8    7 001BDCF0 mupdf_batch_add_text
+          9    8 001C0F20 mupdf_batch_add_text_direct
+         10    9 001BBC80 mupdf_calc_position
+         11    A 001BAF40 mupdf_close_document
+         12    B 001BB2F0 mupdf_detect_orientation_by_text
+         13    C 001BA0E0 mupdf_fini
+         14    D 001BAF20 mupdf_free_buffer
+         15    E 001C21C0 mupdf_free_render_data
+         16    F 001BA1C0 mupdf_get_error
+         17   10 001BB020 mupdf_get_page_count
+         18   11 001BB110 mupdf_get_page_size
+         19   12 001C3810 mupdf_get_supported_image_formats
+         20   13 001C3880 mupdf_get_version
+         21   14 001B9FD0 mupdf_init
+         22   15 001BB290 mupdf_is_page_landscape
+         23   16 001C3820 mupdf_is_pdf_file
+         24   17 001BA1E0 mupdf_open_document
+         25   18 001BA4E0 mupdf_open_document_from_mem
+         26   19 001C21E0 mupdf_print
+         27   1A 001C2210 mupdf_print_pages
+         28   1B 001C1210 mupdf_render_page
+         29   1C 001BA860 mupdf_save_document
+         30   1D 001BAB00 mupdf_save_document_to_mem
+
+  Summary
+
+     2112000 .data
+      28C000 .rdata
+       19000 .reloc
+      31D000 .text
