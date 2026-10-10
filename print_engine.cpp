@@ -159,6 +159,8 @@ static void pe_log_dc_caps(HDC dc, const char* event) {
 
 struct PrintEngine {
     HDC hPrinterDC;
+    DEVMODEA* current_devmode;
+    size_t current_devmode_size;
     DOCINFO docInfo;
     PRINTDLG printDlg;
     
@@ -308,7 +310,7 @@ PrintEngine* print_engine_create(const char* printer_name, const PrintOptions* o
     memset(engine, 0, sizeof(PrintEngine));
     
     engine->copies = options ? options->copies : 1;
-    engine->duplex = options ? options->duplex : 0;
+    engine->duplex = options ? options->duplex : 1;
     
     if (printer_name && printer_name[0]) {
         strncpy(engine->printer_name, printer_name, sizeof(engine->printer_name) - 1);
@@ -322,7 +324,7 @@ PrintEngine* print_engine_create(const char* printer_name, const PrintOptions* o
         "INFO", "ENGINE_CREATE_BEGIN",
         "engine=%p | printer=\"%s\" | options_ptr=%p | copies=%d | duplex=%d | color=%d | orientation=%d | paper_id=%d | paper=%s",
         (void*)engine, printer_utf8, (void*)options,
-        options ? options->copies : 1, options ? options->duplex : 0,
+        options ? options->copies : 1, engine->duplex,
         options ? options->color : 2, options ? options->orientation : 0,
         options ? options->paper_size : 0, pe_paper_name(options ? options->paper_size : 0));
     
@@ -380,18 +382,14 @@ PrintEngine* print_engine_create(const char* printer_name, const PrintOptions* o
     }
 
     pe_log_devmode("DEVMODE_BEFORE", devmode, devmode_result);
-    // 应用双面打印设置
+    // Apply every job's simplex/duplex choice, never inherit the printer default.
     // duplex: 1=单面, 2=长边翻转, 3=短边翻转
-    if (devmode && engine->duplex > 1) {
-        // 确保 DEVMODE 可以修改
-        if (!(devmode->dmFields & DM_DUPLEX)) {
-            devmode->dmFields |= DM_DUPLEX;
-        }
-        // 设置双面打印模式
-        // DMDUP_SIMPLEX = 1 (单面)
-        // DMDUP_HORIZONTAL = 2 (短边翻转，适用于纵向页面)
-        // DMDUP_VERTICAL = 3 (长边翻转，适用于横向页面)
+    if (devmode) {
+        devmode->dmFields |= DM_DUPLEX;
         switch (engine->duplex) {
+            case 1:
+                devmode->dmDuplex = DMDUP_SIMPLEX;
+                break;
             case 2: // 长边翻转
                 devmode->dmDuplex = DMDUP_VERTICAL;
                 break;
@@ -399,10 +397,18 @@ PrintEngine* print_engine_create(const char* printer_name, const PrintOptions* o
                 devmode->dmDuplex = DMDUP_HORIZONTAL;
                 break;
             default:
-                devmode->dmDuplex = DMDUP_SIMPLEX;
-                break;
+                PE_LOG_EVENT("ERROR", "DUPLEX_APPLY",
+                    "status=FAIL | requested=%d | reason=invalid_parameter", engine->duplex);
+                free(devmode);
+                ClosePrinter(hPrinter);
+                set_error(engine, "Invalid duplex parameter (expected 1, 2 or 3)");
+                delete engine;
+                return nullptr;
         }
     }
+    const short requested_duplex = devmode->dmDuplex;
+    PE_LOG_EVENT("INFO", "DUPLEX_APPLY",
+        "requested=%d | expected_dm_duplex=%d", engine->duplex, requested_duplex);
     
     // 应用份数设置
     if (devmode) {
@@ -540,21 +546,45 @@ PrintEngine* print_engine_create(const char* printer_name, const PrintOptions* o
 
     }
 
-    pe_log_devmode("DEVMODE_AFTER", (DEVMODEA*)devmode, devmode_result);
+    devmode_result = DocumentPropertiesA(
+        nullptr, hPrinter, engine->printer_name, devmode, devmode,
+        DM_IN_BUFFER | DM_OUT_BUFFER);
+    if (devmode_result != IDOK) {
+        free(devmode);
+        ClosePrinter(hPrinter);
+        set_error(engine, "Cannot validate printer devmode");
+        delete engine;
+        return nullptr;
+    }
+    pe_log_devmode("DEVMODE_AFTER", devmode, devmode_result);
+    if (devmode->dmDuplex != requested_duplex ||
+        (requested_duplex != DMDUP_SIMPLEX && !(devmode->dmFields & DM_DUPLEX))) {
+        PE_LOG_EVENT("ERROR", "DUPLEX_VALIDATE",
+            "status=FAIL | requested=%d | expected=%d | actual=%d",
+            engine->duplex, requested_duplex, devmode->dmDuplex);
+        free(devmode);
+        ClosePrinter(hPrinter);
+        set_error(engine, "Driver did not accept job duplex setting");
+        delete engine;
+        return nullptr;
+    }
+    PE_LOG_EVENT("INFO", "DUPLEX_VALIDATE",
+        "status=OK | requested=%d | actual=%d", engine->duplex, devmode->dmDuplex);
     
     // 创建设备上下文
-    engine->hPrinterDC = CreateDC(nullptr, engine->printer_name, nullptr, devmode);
-    
-    if (devmode) free(devmode);
+    engine->hPrinterDC = CreateDCA(nullptr, engine->printer_name, nullptr, devmode);
     
     if (!engine->hPrinterDC) {
         PE_LOG_EVENT("ERROR", "ENGINE_CREATE_END", "status=FAIL | engine=%p | printer=\"%s\" | stage=CreateDC | gle=%lu", (void*)engine, printer_utf8, GetLastError());
+        free(devmode);
         ClosePrinter(hPrinter);
         set_error(engine, "Cannot create printer DC");
         delete engine;
         return nullptr;
     }
 
+    engine->current_devmode = devmode;
+    engine->current_devmode_size = (size_t)devmode_size;
     pe_log_dc_caps(engine->hPrinterDC, "DC_CAPS");
     PE_LOG_EVENT("INFO", "ENGINE_CREATE_END", "status=OK | engine=%p | printer=\"%s\"", (void*)engine, printer_utf8);
     
@@ -584,12 +614,6 @@ int print_engine_start_job(PrintEngine* engine, const char* document_title) {
     engine->docInfo.lpszOutput = nullptr;
     engine->docInfo.lpszDatatype = nullptr;
     engine->docInfo.fwType = 0;
-    
-    // 设置双面打印模式
-    if (engine->duplex) {
-        DEVMODE* dm = (DEVMODE*)::GetWindowLongPtr((HWND)engine->hPrinterDC, GWLP_HINSTANCE);
-        // 实际上需要使用 DocumentProperties 来设置
-    }
     
     int job_id = StartDoc(engine->hPrinterDC, &engine->docInfo);
     if (job_id <= 0) {
@@ -891,77 +915,53 @@ void print_engine_destroy(PrintEngine* engine) {
     if (engine->hPrinterDC) {
         DeleteDC(engine->hPrinterDC);
     }
+    if (engine->current_devmode) {
+        free(engine->current_devmode);
+        engine->current_devmode = nullptr;
+        engine->current_devmode_size = 0;
+    }
     
     delete engine;
 }
 
-int print_engine_reset_paper(PrintEngine* engine, int paper_size) {
-    if (!engine || !engine->hPrinterDC) {
-        PE_LOG_EVENT("ERROR", "PAPER_RESET_END", "status=FAIL | engine=%p | requested_id=%d | requested=%s | ret=-1 | reason=invalid_engine", (void*)engine, paper_size, pe_paper_name(paper_size));
-        return -1;
-    }
-
-    PE_LOG_EVENT("INFO", "PAPER_RESET_BEGIN", "engine=%p | requested_id=%d | requested=%s | current_page=%d | job_started=%s", (void*)engine, paper_size, pe_paper_name(paper_size), engine->current_page, engine->job_started ? "true" : "false");
-    
-    // 只能在上一次 EndPage 之后、下一次 StartPage 之前调用
-    if (engine->job_started && engine->current_page > 0) {
-        // 当前处于页面中间，不能调用
-    }
-    
-    // 获取当前打印机的 DEVMODE
-    HANDLE hPrinter;
-    if (!OpenPrinter(engine->printer_name, &hPrinter, nullptr)) {
-        set_error(engine, "Cannot open printer for reset_paper");
+int print_engine_reset_page(PrintEngine* engine, int paper_size, int orientation) {
+    if (!engine || !engine->hPrinterDC || !engine->current_devmode ||
+        engine->current_devmode_size < sizeof(DEVMODEA)) return -1;
+    if (paper_size < 0 || paper_size > 19 || orientation < 0 || orientation > 2) {
+        set_error(engine, "Invalid page settings");
         return -2;
     }
-    
-    DWORD needed = 0;
-    GetPrinter(hPrinter, 2, nullptr, 0, &needed);
-    
-    if (needed == 0) {
-        ClosePrinter(hPrinter);
-        set_error(engine, "GetPrinter failed for reset_paper");
+    PE_LOG_EVENT("INFO", "PAGE_RESET_BEGIN",
+        "engine=%p | paper_id=%d | orientation=%d | printed_pages=%d",
+        (void*)engine, paper_size, orientation, engine->current_page);
+
+    HANDLE hPrinter = nullptr;
+    if (!OpenPrinterA(engine->printer_name, &hPrinter, nullptr)) {
+        set_error(engine, "Cannot open printer for reset_page");
         return -3;
     }
-    
-    PRINTER_INFO_2* pi2 = (PRINTER_INFO_2*)malloc(needed);
-    if (!GetPrinter(hPrinter, 2, (LPBYTE)pi2, needed, &needed)) {
-        free(pi2);
+    LONG required_size = DocumentPropertiesA(
+        nullptr, hPrinter, engine->printer_name, nullptr, nullptr, 0);
+    if (required_size <= 0 || (size_t)required_size > engine->current_devmode_size) {
         ClosePrinter(hPrinter);
-        set_error(engine, "GetPrinter failed for reset_paper");
+        set_error(engine, "Printer devmode size changed during job");
         return -4;
     }
-    
-    // 获取当前的 DEVMODE（从 PRINTER_INFO_2）
-    DEVMODE* dm = nullptr;
-    if (pi2->pDevMode) {
-        DWORD dmSize = pi2->pDevMode->dmSize + pi2->pDevMode->dmDriverExtra;
-        dm = (DEVMODE*)malloc(dmSize);
-        memcpy(dm, pi2->pDevMode, dmSize);
-    }
-    free(pi2);
-    ClosePrinter(hPrinter);
-    
+    DEVMODEA* dm = (DEVMODEA*)malloc(engine->current_devmode_size);
     if (!dm) {
-        set_error(engine, "Cannot get DEVMODE for reset_paper");
+        ClosePrinter(hPrinter);
+        set_error(engine, "Cannot allocate page devmode");
         return -5;
     }
-
-	pe_log_devmode("PAPER_RESET_DEVMODE_BEFORE", (DEVMODEA*)dm, IDOK);
-
-  // ResetDC 使用的是打印机默认 DEVMODE，默认方向可能恢复成纵向。
-  // 根据当前打印 DC 的可打印区域保留现有打印方向。
-  int current_printable_w = GetDeviceCaps(engine->hPrinterDC, HORZRES);
-  int current_printable_h = GetDeviceCaps(engine->hPrinterDC, VERTRES);
-
-  if (current_printable_w > 0 && current_printable_h > 0) {
-      dm->dmFields |= DM_ORIENTATION;
-      dm->dmOrientation =
-          (current_printable_w > current_printable_h)
-          ? DMORIENT_LANDSCAPE
-          : DMORIENT_PORTRAIT;
-  }
+    // Copy the active job settings, including the driver's private data.
+    memcpy(dm, engine->current_devmode, engine->current_devmode_size);
+    pe_log_devmode("PAGE_RESET_DEVMODE_BEFORE", dm, IDOK);
+    if (orientation == 1 || orientation == 2) {
+        dm->dmFields |= DM_ORIENTATION;
+        dm->dmOrientation = (orientation == 2) ? DMORIENT_LANDSCAPE : DMORIENT_PORTRAIT;
+    }
     // 设置纸张大小
+    if (paper_size > 0) {
     dm->dmFields |= DM_PAPERSIZE;
     switch (paper_size) {
         case 1: dm->dmPaperSize = DMPAPER_A4;      break;
@@ -1040,9 +1040,10 @@ int print_engine_reset_paper(PrintEngine* engine, int paper_size) {
                 dm->dmPaperLength = 1250; dm->dmPaperWidth = 880;
                 dm->dmFields |= DM_PAPERLENGTH | DM_PAPERWIDTH; break;
         default: 
-            PE_LOG_EVENT("WARN", "PAPER_RESET_END", "status=SKIPPED | engine=%p | requested_id=%d | requested=%s | ret=0 | reason=unsupported_paper_id", (void*)engine, paper_size, pe_paper_name(paper_size));
             free(dm);
-            return 0;
+            ClosePrinter(hPrinter);
+            set_error(engine, "Unsupported paper id");
+            return -6;
     }
     // 清除自定义尺寸标志（避免与 dmPaperSize 冲突）——仅当非自定义尺寸时
     if (paper_size >= 1 && paper_size <= 5) {
@@ -1050,29 +1051,72 @@ int print_engine_reset_paper(PrintEngine* engine, int paper_size) {
         dm->dmFields &= ~DM_PAPERWIDTH;
     }
 
-    pe_log_devmode("PAPER_RESET_DEVMODE_AFTER", (DEVMODEA*)dm, IDOK);
+    } // paper_size > 0; otherwise keep the current paper settings.
 
-    // ResetDC 动态切换纸张（必须在 StartPage 之前调用）
-    HDC newDC = ResetDC(engine->hPrinterDC, dm);
-    free(dm);
+    // Reapply and verify the active job's duplex setting on every page reset.
+    const short requested_duplex = engine->current_devmode->dmDuplex;
+    dm->dmFields |= DM_DUPLEX;
+    dm->dmDuplex = requested_duplex;
+
+    LONG validate_ret = DocumentPropertiesA(
+        nullptr, hPrinter, engine->printer_name, dm, dm,
+        DM_IN_BUFFER | DM_OUT_BUFFER);
+    ClosePrinter(hPrinter);
+    if (validate_ret != IDOK) {
+        free(dm);
+        set_error(engine, "Driver rejected page settings");
+        return -7;
+    }
+    if (orientation == 1 || orientation == 2) {
+        short expected = (orientation == 2) ? DMORIENT_LANDSCAPE : DMORIENT_PORTRAIT;
+        if (!(dm->dmFields & DM_ORIENTATION) || dm->dmOrientation != expected) {
+            pe_log_devmode("PAGE_RESET_DIRECTION_REJECTED", dm, validate_ret);
+            free(dm);
+            set_error(engine, "Driver did not accept page orientation");
+            return -8;
+        }
+    }
+    pe_log_devmode("PAGE_RESET_DEVMODE_AFTER", dm, validate_ret);
+    if (dm->dmDuplex != requested_duplex ||
+        (requested_duplex != DMDUP_SIMPLEX && !(dm->dmFields & DM_DUPLEX))) {
+        PE_LOG_EVENT("ERROR", "PAGE_RESET_DUPLEX_VALIDATE",
+            "status=FAIL | requested=%d | expected=%d | actual=%d",
+            engine->duplex, requested_duplex, dm->dmDuplex);
+        free(dm);
+        set_error(engine, "Driver changed duplex setting during page reset");
+        return -10;
+    }
+    PE_LOG_EVENT("INFO", "PAGE_RESET_DUPLEX_VALIDATE",
+        "status=OK | requested=%d | actual=%d", engine->duplex, dm->dmDuplex);
+
+    // Only call between pages, before the next StartPage.
+    HDC newDC = ResetDCA(engine->hPrinterDC, dm);
     
     if (!newDC) {
         char err[128];
         DWORD le = GetLastError();
         _snprintf(err, sizeof(err), "ResetDC failed, gle=%lu", le);
+        err[sizeof(err) - 1] = '\0';
+        free(dm);
         set_error(engine, err);
-        PE_LOG_EVENT("ERROR", "PAPER_RESET_END", "status=FAIL | engine=%p | requested_id=%d | requested=%s | ret=-6 | gle=%lu", (void*)engine, paper_size, pe_paper_name(paper_size), le);
-        return -6;
+        PE_LOG_EVENT("ERROR", "PAGE_RESET_END", "status=FAIL | engine=%p | paper_id=%d | orientation=%d | ret=-9 | gle=%lu", (void*)engine, paper_size, orientation, le);
+        return -9;
     }
 	// ResetDC 可能返回更新后的 HDC，后续打印必须使用它。
 	engine->hPrinterDC = newDC;
+    free(engine->current_devmode);
+    engine->current_devmode = dm;
 
-    pe_log_dc_caps(newDC, "PAPER_RESET_DC_CAPS");
+    pe_log_dc_caps(newDC, "PAGE_RESET_DC_CAPS");
 	
 	
-    PE_LOG_EVENT("INFO", "PAPER_RESET_END", "status=OK | engine=%p | requested_id=%d | requested=%s | ret=0", (void*)engine, paper_size, pe_paper_name(paper_size));
+    PE_LOG_EVENT("INFO", "PAGE_RESET_END", "status=OK | engine=%p | paper_id=%d | orientation=%d", (void*)engine, paper_size, orientation);
     
     return 0;
+}
+
+int print_engine_reset_paper(PrintEngine* engine, int paper_size) {
+    return print_engine_reset_page(engine, paper_size, 0);
 }
 
 const char* print_engine_get_error(PrintEngine* engine) {
@@ -1136,6 +1180,8 @@ void print_engine_set_callback(PrintEngine*, PrintCallback, void*) {}
 int print_engine_start_job(PrintEngine*, const char*) { return -1; }
 int print_engine_print_page(PrintEngine*, int, int, int, const unsigned char*, int) { return -1; }
 int print_engine_end_job(PrintEngine*) { return -1; }
+int print_engine_reset_page(PrintEngine*, int, int) { return -1; }
+int print_engine_reset_paper(PrintEngine*, int) { return -1; }
 void print_engine_cancel_job(PrintEngine*) {}
 void print_engine_destroy(PrintEngine*) {}
 const char* print_engine_get_error(PrintEngine*) { return "Not implemented on this platform"; }

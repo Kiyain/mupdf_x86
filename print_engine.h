@@ -14,9 +14,9 @@ extern "C" {
 /**
  * @brief 打印选项
  * @note duplex 参数说明：
- *   - 0: 单面打印
- *   - 1: 双面长边翻转（Long Edge Flip）- 适用于横向打印，打印后沿长边翻页
- *   - 2: 双面短边翻转（Short Edge Flip）- 适用于纵向打印，打印后沿短边翻页
+ *   - 1: 单面打印
+ *   - 2: 双面长边翻转（Long Edge Flip）
+ *   - 3: 双面短边翻转（Short Edge Flip）
  */
 typedef struct PrintOptions_s {
     int copies;              /**< 打印份数 */
@@ -154,6 +154,10 @@ void print_engine_destroy(PrintEngine* engine);
  * @note 此函数在两页之间调用（StartPage之前），使用ResetDC动态切换纸张
  */
 int print_engine_reset_paper(PrintEngine* engine, int paper_size);
+
+/** Update paper (0=keep) and orientation (0=keep, 1=portrait, 2=landscape).
+ * Call only before StartPage or between EndPage and the next StartPage. */
+int print_engine_reset_page(PrintEngine* engine, int paper_size, int orientation);
 
 /**
  * @brief 获取最后错误的描述

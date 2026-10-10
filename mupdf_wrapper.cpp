@@ -3375,10 +3375,11 @@ int mupdf_print_pages(
     PrintOptions default_opts = print_options_default();
     PrintOptions* opts = options ? nullptr : &default_opts;
     const PrintOptions* print_opts = options ? options : &default_opts;
+    const bool auto_orientation = (!options || options->orientation == 0);
 
     // 自动检测 PDF 页面方向，防止某些打印机（如立思辰）出现 90 度旋转问题
     // 如果用户已经明确设置了 orientation（orientation != 0），则使用用户设置
-    if (!options || options->orientation == 0) {
+    if (auto_orientation) {
         // 确定要打印的页码范围
         int from = print_opts->from_page > 0 ? print_opts->from_page - 1 : 0;
         int to = print_opts->to_page > 0 ? print_opts->to_page - 1 : total - 1;
@@ -3507,6 +3508,7 @@ int mupdf_print_pages(
 
     int dpi = 200; // 打印分辨率：200 DPI 兼顾 A4~A0 清晰度和内存安全（A0约186MB，未超256MB上限）
     int last_paper_size = print_opts->paper_size; // 记住上次纸张类型，避免重复 ResetDC
+    int last_orientation = 0; // Force an explicit setting for the first page too.
 
     LOG_EVENT("INFO", "PRINT", "LOOP_BEGIN", "doc=%p | engine=%p | from=%d | to=%d | total_pages=%d | render_dpi=%d | paper_id=%d | paper=%s", (void*)doc, (void*)engine, from + 1, to + 1, total, dpi, last_paper_size, log_paper_name(last_paper_size));
 
@@ -3527,25 +3529,59 @@ int mupdf_print_pages(
 
         float pw = 0, ph = 0;
 
-        // ★ 逐页检测纸张大小，换页前 ResetDC（仅当纸张类型变化时）
-        if (print_opts->paper_size == 0 || last_paper_size == 0) {
-            // 用户指定了 auto (0)，每次都检测
-            mupdf_get_page_size(ctx, doc, page_idx, &pw, &ph);
-            int page_paper = detect_paper_size_by_points(pw, ph);
-            if (page_paper > 0 && page_paper != last_paper_size) {
-                int reset_ret = print_engine_reset_paper(engine, page_paper);
-                LOG_EVENT(reset_ret == 0 ? "INFO" : "ERROR", "PRINT", "PAPER_RESET", "doc=%p | engine=%p | page=%d | from_id=%d | from=%s | to_id=%d | to=%s | ret=%d", (void*)doc, (void*)engine, page_idx + 1, last_paper_size, log_paper_name(last_paper_size), page_paper, log_paper_name(page_paper), reset_ret);
-                last_paper_size = page_paper;
+        // fz_bound_page-based size includes the PDF page rotation.
+        int size_ret = mupdf_get_page_size(ctx, doc, page_idx, &pw, &ph);
+        if (size_ret != 0 || !(pw > 0) || !(ph > 0)) {
+            LOG_EVENT("ERROR", "PRINT", "PAGE_SETTINGS",
+                "status=FAIL | page=%d | stage=GET_PAGE_SIZE | ret=%d | size=%.3fx%.3f",
+                page_idx + 1, size_ret, pw, ph);
+            print_engine_cancel_job(engine);
+            print_engine_destroy(engine);
+            if (opts && opts != &default_opts && opts != options) free(opts);
+            SET_ERROR(ctx, "Cannot get page size for printing");
+            return -5;
+        }
+
+        int page_orientation = auto_orientation
+            ? ((pw > ph) ? 2 : 1) : print_opts->orientation;
+        if (page_orientation != 1 && page_orientation != 2) {
+            print_engine_cancel_job(engine);
+            print_engine_destroy(engine);
+            if (opts && opts != &default_opts && opts != options) free(opts);
+            SET_ERROR(ctx, "Invalid print orientation");
+            return -5;
+        }
+
+        int page_paper = last_paper_size;
+        // Preserve the existing first-page/following-page paper selection policy.
+        if (print_opts->paper_size == 0 || last_paper_size == 0 || i > from) {
+            int detected_paper = detect_paper_size_by_points(pw, ph);
+            if (detected_paper > 0) page_paper = detected_paper;
+        }
+        int reset_paper = (page_paper >= 1 && page_paper <= 19) ? page_paper : 0;
+        LOG_EVENT("INFO", "PRINT", "PAGE_SETTINGS",
+            "page=%d | visual_size=%.3fx%.3f | paper_id=%d | orientation=%d | mode=%s",
+            page_idx + 1, pw, ph, reset_paper, page_orientation,
+            auto_orientation ? "AUTO" : "USER");
+
+        if (page_paper != last_paper_size || page_orientation != last_orientation) {
+            int reset_ret = print_engine_reset_page(engine, reset_paper, page_orientation);
+            LOG_EVENT(reset_ret == 0 ? "INFO" : "ERROR", "PRINT", "PAGE_RESET",
+                "page=%d | from_paper=%d | to_paper=%d | from_orientation=%d | to_orientation=%d | ret=%d",
+                page_idx + 1, last_paper_size, page_paper,
+                last_orientation, page_orientation, reset_ret);
+            if (reset_ret != 0) {
+                char pe_err[512];
+                _snprintf(pe_err, sizeof(pe_err), "%s", print_engine_get_error(engine));
+                pe_err[sizeof(pe_err) - 1] = '\0';
+                print_engine_cancel_job(engine);
+                print_engine_destroy(engine);
+                if (opts && opts != &default_opts && opts != options) free(opts);
+                SET_ERROR(ctx, pe_err);
+                return -5;
             }
-        } else if (i > from) {
-            // 用户指定了固定纸张，但需要检测混合纸张
-            mupdf_get_page_size(ctx, doc, page_idx, &pw, &ph);
-            int page_paper = detect_paper_size_by_points(pw, ph);
-            if (page_paper > 0 && page_paper != last_paper_size) {
-                int reset_ret = print_engine_reset_paper(engine, page_paper);
-                LOG_EVENT(reset_ret == 0 ? "INFO" : "ERROR", "PRINT", "PAPER_RESET", "doc=%p | engine=%p | page=%d | from_id=%d | from=%s | to_id=%d | to=%s | ret=%d", (void*)doc, (void*)engine, page_idx + 1, last_paper_size, log_paper_name(last_paper_size), page_paper, log_paper_name(page_paper), reset_ret);
-                last_paper_size = page_paper;
-            }
+            last_paper_size = page_paper;
+            last_orientation = page_orientation;
         }
 
         int w = 0, h = 0;
